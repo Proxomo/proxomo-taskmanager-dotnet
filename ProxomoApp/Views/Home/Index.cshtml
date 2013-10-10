@@ -1,0 +1,104 @@
+﻿@model ProxomoApp.Models.HomePageModel
+
+<div class="Body">
+    <h1 class ="Title">App Data</h1>
+    @using(Html.BeginForm("ShowList", "Home"))
+    {
+        <input type="text" class="InputRight" name="AppID" id="AppID" placeholder="Your Api Key" value="@Model.appID" />
+        <input type="text" class="InputLeft" name="ProxomoKey" id="ProxomoKey" placeholder="Proxomo Api Key" value="@Model.proxomoKey" />
+        <br />
+        <p class="error">@ViewBag.error</p>
+        <br />
+        <input type="submit" value="View" class="SubmitButton" name="v" />
+        <input type="submit" value="Add" class="SubmitButton" name="v"/>
+        <input type="text" class="AppDataAddField" name="value" placeholder="App Data Value" />
+        <input type="text" class="AppDataAddField" name="object" placeholder="Object Type Here" />
+        <input type="text" class="AppDataAddField" name="key" placeholder="Your Key Here" />
+        
+        <br />
+        <br />
+        <br />
+    }
+    
+    <table class="ListContainer">
+        @foreach (var item in Model.appData)
+        {
+            <tr >
+                <td class="tdStyle">
+                    <input type="button" value="delete" id="@item.id" onclick="deleteItem(this)"/>
+                </td>
+                <td class="tdStyle">
+                    @item.key
+                </td>
+                <td class="tdStyle">
+                    @item.objectType
+                </td>
+                <td class="tdStyle">
+                    <p>@item.value</p>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>
+
+
+<style type="text/css">
+    .Title {
+        text-align:center;
+    }
+    .Body {
+        margin-right:auto;
+        margin-left:auto;
+        width:1000px;
+    }
+
+    .InputRight {
+        margin-right:auto;
+        border:solid;
+    }
+    .InputLeft {
+        float:right;
+        border:solid;
+    }
+    .SubmitButton {
+        width:175px !important;
+       float:right;
+    }
+    .ListContainer {
+        width:100%;
+    }
+    .AppDataAddField {
+        width:185px;
+        margin-right:10px;
+        border:solid;
+        float:right;
+    }
+    .error {
+        font-weight:bold;
+        color:red;
+    }
+    .tdStyle {
+        width:25%;
+    }
+</style>
+
+<script type="text/javascript">
+    function deleteItem(e)
+    {
+        var aID = $("#AppID").val();
+        var proxKey = $("#ProxomoKey").val();
+        var newURL = "/Home/deleteItem";
+        $.ajax({
+            url: newURL,
+            data: {
+                appID: aID,
+                proxomoKey: proxKey,
+                itemID:e.id
+            },
+            success: function () {
+                window.location.href = "/Home/Index"
+            }
+        })
+    }
+</script>
